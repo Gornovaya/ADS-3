@@ -21,7 +21,7 @@ int prioritet(char sym) {
 
 std::string infx2pstfx(std::string inf) {
   TStack<char> stackChar;
-  std::string pstfx;
+  std::string res;
   int i = 0;
   char top = 0;
 
@@ -65,7 +65,7 @@ std::string infx2pstfx(std::string inf) {
 }
 
 int eval(std::string pst) {
-  TStack<int> stackInt;
+  TStack<int> stack;
   int a, b, temp = 0;
   int i, result;
 
