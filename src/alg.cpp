@@ -1,3 +1,4 @@
+
 // Copyright 2021 NNTU-CS
 #include <string>
 #include "tstack.h"
@@ -25,11 +26,11 @@ std::string infx2pstfx(std::string inf) {
   int i = 0;
   char top = 0;
 
-  for (i = 0; i < inf.length(); i++) {
-    int pr;
-    pr = prioritet(inf[i]);
-    if (pr > -1) {
-      if ((pr == 0 || pr > pr(top) || stackChar.isEmpty()) && inf[i] != ')') {
+  for (i; i < inf.length(); i++) {
+    int p;
+    p = prioritet(inf[i]);
+    if (p > -1) {
+      if ((p == 0 || p > p(top) || stackChar.isEmpty()) && inf[i] != ')') {
         if (stackChar.isEmpty()) top = inf[i];
         stackChar.push(inf[i]);
       } else if (inf[i] == ')') {
@@ -41,7 +42,7 @@ std::string infx2pstfx(std::string inf) {
         stackChar.pop();
         if (stackChar.isEmpty()) top = 0;
       } else {
-        while (!stackChar.isEmpty() && pr(stackChar.get()) >= pr) {
+        while (!stackChar.isEmpty() && p(stackChar.get()) >= p) {
           res.push_back(stackChar.get());
           res.push_back(' ');
           stackChar.pop();
@@ -68,33 +69,35 @@ int eval(std::string pst) {
   TStack<int> stack;
   int a, b, temp = 0;
   int i, result;
+  int top = 0;
 
   for (i = 0; i < pst.length(); i++) {
-    if (pst[i] <= '9' && pst[i] >= '0')
+    if (pst[i] <= '9' && pst[i] >= '0') {
       temp = temp + (pst[i] - '0');
-    else {
+    } else {
       a = stack.top();
       stack.pop();
       b = stack.top();
       stack.pop();
-
-      switch (pst[i]) {
-        case '+':
-          temp = a + b;
-          break;
-        case '-':
-          temp = b - a;
-          break;
-        case '*':
-          temp = b * a;
-          break;
-        case '/':
-          temp = b / a;
-          break;
-      }
-      stack.push(temp);
     }
+
+    switch (pst[i]) {
+      case '+':
+        temp = a + b;
+        break;
+      case '-':
+        temp = b - a;
+        break;
+      case '*':
+        temp = b * a;
+        break;
+      case '/':
+        temp = b / a;
+        break;
+    }
+    stack.push(temp);
   }
-  result = stack.top();
-  return result;
+}
+result = stack.top();
+return result;
 }
