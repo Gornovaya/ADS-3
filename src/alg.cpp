@@ -24,10 +24,10 @@ std::string infx2pstfx(std::string inf) {
   std::string pstfx;
   int i = 0;
   char top = 0;
-  int pr;
-  pr = prioritet(ch);
 
   for (i = 0; i < inf.length(); i++) {
+    int pr;
+    pr = prioritet(inf[i]);
     if (pr > -1) {
       if ((pr == 0 || pr > pr(top) || stackChar.isEmpty()) && inf[i] != ')') {
         if (stackChar.isEmpty()) top = inf[i];
@@ -73,8 +73,10 @@ int eval(std::string pst) {
     if (pst[i] <= '9' && pst[i] >= '0')
       temp = temp + (pst[i] - '0');
     else {
-      a = pop();
-      b = pop();
+      a = stack.top();
+      stack.pop();
+      b = stack.top();
+      stack.pop();
 
       switch (pst[i]) {
         case '+':
@@ -90,9 +92,9 @@ int eval(std::string pst) {
           temp = b / a;
           break;
       }
-      push(temp);
+      stack.push(temp);
     }
   }
-  result = pop();
+  result = stack.top();
   return result;
 }
