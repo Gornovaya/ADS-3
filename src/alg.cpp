@@ -30,7 +30,8 @@ std::string infx2pstfx(std::string inf) {
     int p;
     p = prioritet(inf[i]);
     if (p > -1) {
-      if ((p == 0 || p > p(top) || stackChar.isEmpty()) && inf[i] != ')') {
+      if ((p == 0 || p > prioritet(top) || stackChar.isEmpty()) &&
+          inf[i] != ')') {
         if (stackChar.isEmpty()) top = inf[i];
         stackChar.push(inf[i]);
       } else if (inf[i] == ')') {
@@ -42,7 +43,7 @@ std::string infx2pstfx(std::string inf) {
         stackChar.pop();
         if (stackChar.isEmpty()) top = 0;
       } else {
-        while (!stackChar.isEmpty() && p(stackChar.get()) >= p) {
+        while (!stackChar.isEmpty() && prioritet(stackChar.get()) >= p) {
           res.push_back(stackChar.get());
           res.push_back(' ');
           stackChar.pop();
@@ -67,37 +68,24 @@ std::string infx2pstfx(std::string inf) {
 
 int eval(std::string pst) {
   TStack<int> stack;
-  int a, b, temp = 0;
-  int i, result;
-  int top = 0;
 
-  for (i = 0; i < pst.length(); i++) {
+  for (int i = 0; i < pst.length(); i++) {
     if (pst[i] <= '9' && pst[i] >= '0') {
-      temp = temp + (pst[i] - '0');
-    } else {
-      a = stack.top();
+      stack.push(pst[i] - '0');
+    } else if (pst[i] != ' ') {
+      int a = stack.get();
       stack.pop();
-      b = stack.top();
+      int b = stack.get();
       stack.pop();
+      if (pst[i] == '-')
+        stack.push(b - a);
+      else if (pst[i] == '+')
+        stack.push(b + a);
+      else if (pst[i] == '*')
+        stack.push(b * a);
+      else
+        stack.push(b / a);
     }
-
-    switch (pst[i]) {
-      case '+':
-        temp = a + b;
-        break;
-      case '-':
-        temp = b - a;
-        break;
-      case '*':
-        temp = b * a;
-        break;
-      case '/':
-        temp = b / a;
-        break;
-    }
-    stack.push(temp);
   }
-}
-result = stack.top();
-return result;
+  return stack.get();
 }
